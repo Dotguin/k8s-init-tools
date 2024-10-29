@@ -1,14 +1,14 @@
 apiVersion: kubeadm.k8s.io/v1beta4
 kind: ClusterConfiguration
 kubernetesVersion: stable
-controlPlaneEndpoint: "apiserver.kube.dotguin.com:6443"
-clusterName: "Dotguin kubernetes service"
+controlPlaneEndpoint: "apiserver.kubernetes.example.com:6443"
+clusterName: "Some kubernetes service"
 apiServer:
   certSANs:
-  - "dotguin-cluster"
-  - "dotguin.com"
-  - "*.dotguin.com"
-  - "*.kube.dotguin.com"
+  - "example-cluster"
+  - "example.com"
+  - "*.example.com"
+  - "*.kubernetes.example.com"
   extraArgs:
     - name: audit-policy-file
       value: "/etc/kubernetes/audit-policy.yaml"
@@ -26,6 +26,11 @@ apiServer:
       mountPath: "/etc/kubernetes/audit-policy.yaml"
       readOnly: false
       pathType: File
+    - name: "audit-log-volume"
+      hostPath: "/var/log/kubernetes"
+      mountPath: "/var/log/kubernetes"
+      readOnly: false
+      pathType: DirectoryOrCreate
 networking:
   serviceSubnet: "172.19.0.0/16"
   podSubnet: "172.18.0.0/16"
